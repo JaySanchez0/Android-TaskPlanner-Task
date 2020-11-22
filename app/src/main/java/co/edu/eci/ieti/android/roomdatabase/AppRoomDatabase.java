@@ -12,8 +12,9 @@ import java.util.concurrent.Executors;
 import co.edu.eci.ieti.android.dao.TaskDAO;
 import co.edu.eci.ieti.android.dao.UserDAO;
 import co.edu.eci.ieti.android.network.data.Task;
+import co.edu.eci.ieti.android.network.data.User;
 
-@Database(entities = {Task.class}, version = 1, exportSchema = false)
+@Database(entities = {Task.class, User.class}, version = 1, exportSchema = false)
 public abstract class AppRoomDatabase extends RoomDatabase {
 
     public abstract TaskDAO taskDAO();

@@ -1,6 +1,7 @@
 package co.edu.eci.ieti.android.ui.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,11 +11,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import co.edu.eci.ieti.R;
+import co.edu.eci.ieti.android.network.data.Task;
+import co.edu.eci.ieti.android.repository.TaskRepository;
 import co.edu.eci.ieti.android.storage.Storage;
+import co.edu.eci.ieti.android.ui.adapter.TaskAdapter;
+import co.edu.eci.ieti.android.ui.viewModel.TaskViewModel;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainActivity
     extends AppCompatActivity
@@ -23,9 +38,14 @@ public class MainActivity
 
     private Storage storage;
 
+    private TaskRepository taskRepository;
+    private final ExecutorService executorService = Executors.newFixedThreadPool( 1 );
+
     @Override
     protected void onCreate( Bundle savedInstanceState )
     {
+
+        taskRepository = new TaskRepository(new Storage(this).getToken(),getApplication());
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
         storage = new Storage( this );
@@ -52,7 +72,31 @@ public class MainActivity
 
         NavigationView navigationView = findViewById( R.id.nav_view );
         navigationView.setNavigationItemSelectedListener( this );
+        TaskViewModel viewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
+        viewModel.setToken(new Storage(this).getToken());
+        viewModel.getTasks().observe(this,tasks -> {
+            runOnUiThread(()->renderTask(tasks));
+        });
+        /*executorService.execute(()->{
+            //List<Task> tasks = taskRepository.getTasks();
+           // runOnUiThread(()->renderTask(tasks));
+        });*/
+
     }
+
+    public void renderTask(List<Task> tasks){
+        RecyclerView recy = findViewById(R.id.recyclerView);
+        TaskAdapter adapter=new TaskAdapter(tasks);
+        recy.setHasFixedSize( true );
+        LinearLayoutManager layoutManager = new LinearLayoutManager( this );
+        recy.setAdapter(adapter);
+        recy.setLayoutManager(layoutManager);
+        adapter.notifyDataSetChanged();
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recy.getContext(),
+                layoutManager.getOrientation());
+        recy.addItemDecoration(dividerItemDecoration);
+    }
+
 
     @Override
     public void onBackPressed()

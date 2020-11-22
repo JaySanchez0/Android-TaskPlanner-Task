@@ -3,6 +3,7 @@ package co.edu.eci.ieti.android.network.data;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 /**
@@ -28,7 +29,7 @@ public class User
     public User()
     {
     }
-
+    @Ignore
     public User( String email, String password, String firstName, String lastName )
     {
         this.email = email;

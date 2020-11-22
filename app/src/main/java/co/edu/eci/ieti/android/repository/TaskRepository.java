@@ -24,10 +24,13 @@ public class TaskRepository {
         try{
             List<Task> tasks = service.getTasks().execute().body();
             if(tasks!=null){
+                System.out.println("-------------------- API -----------------"+tasks.toString());
                 taskDAO.deleteAll();
-                for(Task task:tasks) addTask(task);
+                for(Task task:tasks) taskDAO.insert(task);
             }
-        }catch(Exception e){ }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         return taskDAO.getTasks();
     }
 

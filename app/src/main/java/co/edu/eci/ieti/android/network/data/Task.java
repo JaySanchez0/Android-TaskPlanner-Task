@@ -6,8 +6,13 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverter;
+import androidx.room.TypeConverters;
 
 import java.util.Date;
+
+import co.edu.eci.ieti.android.network.DateConverter;
+import co.edu.eci.ieti.android.network.UserConverter;
 
 /**
  * Tomado codigo back
@@ -23,16 +28,16 @@ public class Task
     private String description;
 
     private int priority;
-
     @Ignore
     private User assignedTo;
-
+    @TypeConverters(DateConverter.class)
     private Date dueDate;
 
     public Task()
     {
     }
 
+    @Ignore
     public Task( long id, String description, int priority, Date dueDate )
     {
         this.id = id;
@@ -71,7 +76,7 @@ public class Task
         this.dueDate = dueDate;
     }
 
-    public void assignTo( User asignedTo )
+    public void setAssignedTo( User asignedTo )
     {
         this.assignedTo = asignedTo;
     }
@@ -94,6 +99,6 @@ public class Task
     @Override
     public String toString()
     {
-        return "Task{" + "description='" + description + '\'' + ", priority=" + priority + ", dueDate=" + dueDate + '}';
+        return "Task{" + "description='" + description + '\'' + ", priority=" + priority + ", dueDate=" + dueDate + "}";
     }
 }

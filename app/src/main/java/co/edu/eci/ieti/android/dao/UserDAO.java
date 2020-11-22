@@ -12,8 +12,10 @@ import co.edu.eci.ieti.android.network.data.User;
 
 @Dao
 public interface UserDAO {
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(User user);
+
     @Query("SELECT * FROM table_user")
     List<User> getUsers();
 }

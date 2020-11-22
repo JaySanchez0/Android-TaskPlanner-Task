@@ -1,8 +1,19 @@
+
+
+
 # 3.3 Android Local Storage & List Views
 * Consume secure REST API wih Retrofit
 * Configure and integrate Android local storage using ROOM Persistence library.
 * Create a List View using RecyclerView and CardLayout.
 
+
+### Presentado por:
+
+Jeisson G. Sanchez R.
+
+### Link Lab:
+
+[ver](https://github.com/ieti-eci/3.3-android-local-storage-list-views) 
 
 #### Part 1: Consume secure REST API using Bearer Token and Retrofit
 

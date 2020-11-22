@@ -16,7 +16,8 @@ public class RetrofitNetwork
 
     private AuthService authService;
 
-    private static String BASE_URL = "http:/10.0.2.2:8080/";
+    //private static String BASE_URL = "http:/10.0.2.2:8080/";
+    private static String BASE_URL = "http:/192.168.1.10:8080/";
 
     private TaskService taskService;
 
